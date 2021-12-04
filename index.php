@@ -4,6 +4,12 @@ if (!isset($_GET['ACCESS']) || $_GET['ACCESS'] != 'GRANTED') {
     die;
 }
 
+$dir  = 'tracks';
+$filesPath = $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$_SERVER['HTTP_HOST'].'/'.$dir.'/';
+$files = scandir($dir);
+unset($files[0]);
+unset($files[1]);
+$IP = $_SERVER['REMOTE_ADDR'];
 ?>
 
 <!doctype html>
@@ -22,7 +28,23 @@ if (!isset($_GET['ACCESS']) || $_GET['ACCESS'] != 'GRANTED') {
 <body>
     <main>
         <section class="main">
-
+            <div class="main__list player-list">
+                <ul class="player-list__list">
+                    <?foreach ($files as $file):
+                        $fileArray = explode('#', $file);
+                        $fileNumber = $fileArray[0];
+                        $fileName = $fileArray[1];
+                    ?>
+                        <li class="player-list__item">
+                            <a href="<?=$filesPath.$file?>" data-number="<?=$fileNumber?>"><?=$fileName?></a>
+                        </li>
+                    <?endforeach?>
+                </ul>
+            </div>
+            <div class="main_controls controls">
+                <input class="controls__input" type="text" value="">
+                <button class="controls__reset">Сбросить</button>
+            </div>
         </section>
     </main>
 </body>
