@@ -1,0 +1,17 @@
+Options -Indexes
+AddDefaultCharset UTF-8
+AddCharset utf-8 .css .js .json .rss .xml .mp3
+
+<IfModule mod_php7.c>
+    php_value mbstring.internal_encoding UTF-8
+    php_value default_charset "utf-8"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
+
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

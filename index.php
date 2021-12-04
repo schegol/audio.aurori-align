@@ -1,4 +1,9 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 <?
+error_reporting(-1);
+header('Content-Type: text/html; charset=utf-8');
+
 if (!isset($_GET['ACCESS']) || $_GET['ACCESS'] != 'GRANTED') {
     echo 'Доступ закрыт';
     die;
@@ -9,7 +14,8 @@ $filesPath = $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$_SERVER['HTTP_HOST'].'/'.
 $files = scandir($dir);
 unset($files[0]);
 unset($files[1]);
-$IP = $_SERVER['REMOTE_ADDR'];
+$userIP = $_SERVER['REMOTE_ADDR'];
+
 ?>
 
 <!doctype html>
@@ -26,24 +32,29 @@ $IP = $_SERVER['REMOTE_ADDR'];
     <script src="script.js" defer></script>
 </head>
 <body>
-    <main>
-        <section class="main">
+    <main class="main">
+        <section class="main__section">
             <div class="main__list player-list">
                 <ul class="player-list__list">
                     <?foreach ($files as $file):
-                        $fileArray = explode('#', $file);
+                        $file = iconv('cp1251', 'utf-8', $file);
+                        $fileArray = explode('@', $file);
                         $fileNumber = $fileArray[0];
                         $fileName = $fileArray[1];
                     ?>
                         <li class="player-list__item">
-                            <a href="<?=$filesPath.$file?>" data-number="<?=$fileNumber?>"><?=$fileName?></a>
+                            <a class="player-list__item-link" href="<?=$filesPath.$file?>" data-number="<?=$fileNumber?>"><?=$fileName?></a>
+                            <audio controls src="<?=$filesPath.$file?>"></audio>
                         </li>
                     <?endforeach?>
                 </ul>
             </div>
             <div class="main_controls controls">
-                <input class="controls__input" type="text" value="">
-                <button class="controls__reset">Сбросить</button>
+                <audio class="controls__audio" controls src=""></audio>
+                <div class="controls__form">
+                    <input class="controls__input" type="text" value="">
+                    <button class="controls__reset">Сбросить</button>
+                </div>
             </div>
         </section>
     </main>
