@@ -38,6 +38,7 @@ body {
     height: 100vh;
     max-height: 600px;
     margin: auto;
+    padding: 0 5px;
 }
 
 .player-list {
@@ -57,20 +58,65 @@ body {
 }
 
 .controls {
-    flex-basis: 100px;
+    flex-basis: 150px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    padding-top: 15px;
+    margin-top: 15px;
 }
 
+.controls__text-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 30px;
+    overflow: hidden;
+}
+
+.controls__text-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 25px #fff;
+    z-index: 1;
+}
+
+.controls__text {
+    position: relative;
+    margin: 0;
+    padding: 0 5px;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.controls__text--running {
+    animation-name: runningText;
+    animation-direction: alternate;
+}
+
+/*@keyframes runningText {*/
+/*    0% {*/
+/*        font-size: 12px;*/
+/*    }*/
+
+/*    100% {*/
+/*        font-size: 20px;*/
+/*    }*/
+/*}*/
+
 .controls__audio {
-    flex-basis: calc(50% - 5px);
+    flex-basis: calc(33.3333% - 5px);
+    width: 100%;
 }
 
 .controls__form {
-    flex-basis: calc(50% - 5px);
+    flex-basis: calc(33.3333% - 5px);
     display: flex;
     justify-content: center;
     width: 100%;
@@ -96,6 +142,7 @@ body {
     padding: 10px 15px;
     color: var(--text-color);
     font-weight: 600;
+    text-transform: uppercase;
     background-color: var(--accent-color);
     border-radius: 5px;
     box-shadow: none;

@@ -50,6 +50,9 @@ $userIP = $_SERVER['REMOTE_ADDR'];
                 </ul>
             </div>
             <div class="main_controls controls">
+                <div class="controls__text-box">
+                    <p class="controls__text">Выберите аудиодорожку Выберите аудиодорожку</p>
+                </div>
                 <audio class="controls__audio" controls src=""></audio>
                 <div class="controls__form">
                     <input class="controls__input" type="text" value="">
