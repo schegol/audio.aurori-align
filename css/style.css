@@ -64,12 +64,17 @@ body {
 .player-list__item-link {
     display: flex;
     align-items: center;
+    padding: 5px 15px;
     text-decoration: none;
     color: #000;
+    border: 1px dotted #000;
+    border-radius: 5px;
 }
 
 .player-list__item-link--selected {
     color: var(--accent-color);
+    border-color: var(--accent-color);
+    border-style: solid;
 }
 
 .player-list__item-link::before {
@@ -80,12 +85,18 @@ body {
     width: 35px;
     height: 35px;
     margin-right: 15px;
-    background-image: url("icon-play.svg");
+    background-image: url("../img/icon-play.svg");
     background-position: 10px center;
     background-size: 15px auto;
     background-repeat: no-repeat;
     border: 1px solid var(--accent-color);
     border-radius: 50%;
+}
+
+.player-list__item-link--selected::before {
+    background-image: url("../img/icon-headphones.svg");
+    background-position: center;
+    background-size: 18px auto;
 }
 
 .controls {

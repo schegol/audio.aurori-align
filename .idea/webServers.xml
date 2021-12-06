@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a2b83db4-1344-459e-9d45-7255446d45f0" name="audio.aurori-align.ru" url="http://109.95.210.219">
+        <fileTransfer rootFolder="/www/audio.aurori-align.ru" host="109.95.210.219" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
