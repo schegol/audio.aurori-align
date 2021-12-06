@@ -1,5 +1,3 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
 <?
 error_reporting(-1);
 header('Content-Type: text/html; charset=utf-8');
@@ -14,13 +12,13 @@ $filesPath = $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$_SERVER['HTTP_HOST'].'/'.
 $files = scandir($dir);
 unset($files[0]);
 unset($files[1]);
-$userIP = $_SERVER['REMOTE_ADDR'];
-
+$clientIP = $_SERVER['REMOTE_ADDR'];
 ?>
 
 <!doctype html>
 <html lang="ru">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -44,22 +42,23 @@ $userIP = $_SERVER['REMOTE_ADDR'];
                     ?>
                         <li class="player-list__item">
                             <a class="player-list__item-link" href="<?=$filesPath.$file?>" data-number="<?=$fileNumber?>"><?=$fileName?></a>
-                            <audio controls src="<?=$filesPath.$file?>"></audio>
                         </li>
                     <?endforeach?>
                 </ul>
             </div>
             <div class="main_controls controls">
                 <div class="controls__text-box">
-                    <p class="controls__text">Выберите аудиодорожку Выберите аудиодорожку</p>
+                    <p class="controls__text">Выберите аудиодорожку</p>
                 </div>
-                <audio class="controls__audio" controls src=""></audio>
+                <audio class="controls__audio" controls src="" data-number="" data-cookie=""></audio>
                 <div class="controls__form">
-                    <input class="controls__input" type="text" value="">
+                    <input class="controls__input" type="text" placeholder="Время последней паузы" value="">
                     <button class="controls__reset">Сбросить</button>
                 </div>
             </div>
         </section>
     </main>
+
+    <script>let clientIP = '<?=$clientIP?>'</script>
 </body>
 </html>

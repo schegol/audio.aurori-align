@@ -38,13 +38,13 @@ body {
     height: 100vh;
     max-height: 600px;
     margin: auto;
-    padding: 0 5px;
+    padding: 5px;
 }
 
 .player-list {
     flex-grow: 1;
     padding: 15px;
-    border: 1px solid #000;
+    border: 2px solid var(--border-color);
     border-radius: 5px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -57,7 +57,39 @@ body {
     list-style: none;
 }
 
+.player-list__item:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.player-list__item-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+}
+
+.player-list__item-link--selected {
+    color: var(--accent-color);
+}
+
+.player-list__item-link::before {
+    content: "";
+    position: static;
+    flex-shrink: 0;
+    display: block;
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
+    background-image: url("icon-play.svg");
+    background-position: 10px center;
+    background-size: 15px auto;
+    background-repeat: no-repeat;
+    border: 1px solid var(--accent-color);
+    border-radius: 50%;
+}
+
 .controls {
+    flex-shrink: 0;
     flex-basis: 150px;
     display: flex;
     flex-direction: column;
@@ -124,8 +156,11 @@ body {
 
 .controls__input {
     flex-grow: 1;
+    width: 100%;
     padding: 3px 5px;
     font-weight: 600;
+    font-size: 18px;
+    text-align: center;
     border-radius: 5px;
     border: 1px solid var(--border-color);
 }
