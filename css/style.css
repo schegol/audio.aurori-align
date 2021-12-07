@@ -145,6 +145,7 @@ body {
     animation-direction: alternate;
 }
 
+/*TODO: анимация бегущей строки*/
 /*@keyframes runningText {*/
 /*    0% {*/
 /*        font-size: 12px;*/

@@ -21,7 +21,7 @@ const transformTimeToSeconds = function(string) {
         minutes = parseInt(timeArray.pop());
         s += minutes * 60;
     }
-    if (timeArray.length) {
+    if (timeArray.length && parseInt(timeArray.pop()) > 0) {
         hours = parseInt(timeArray.pop());
         s += hours * 3600;
     }
@@ -71,17 +71,55 @@ $(document).ready(function () {
         }
     });
 
+    //маска на инпут времени:
+    timeInput.inputmask({
+        mask: '[9{0,3}]:59:59',
+        definitions: {
+            '5': {
+                validator: "[0-5]",
+                cardinality: 1
+            }
+        },
+        'clearIncomplete': true,
+        'greedy': false,
+        showMaskOnHover: false,
+    });
+
+    //onblur обновляем cookie и добавляем 0 в часы, если ничего не введено:
+    timeInput.on('blur', function () {
+        let onBlurTimeArray = timeInput.val().split(':'),
+            currentCookie = audioPlayer.attr('data-cookie');
+
+        if (onBlurTimeArray.length === 3 && onBlurTimeArray[0] <= 0) {
+            onBlurTimeArray[0] = '0';
+            timeInput.val(onBlurTimeArray.join(':'));
+        }
+
+        if (currentCookie.length) {
+            setCookie(currentCookie, transformTimeToSeconds(timeInput.val()));
+        }
+    });
+
     //обработка нажатия на запись из списка:
     let audioItems = $('.player-list__item-link'),
         textLine = $('.controls__text');
 
     audioItems.on('click', function (e) {
-        //TODO: при переключении на другой трек во время воспроизведения текущего перед сменой обновить cookie
-
         e.preventDefault();
+
+        //при переключении на другой трек во время воспроизведения текущего перед сменой обновим cookie:
+        if (audioPlayer[0].paused === false) {
+            let currentPlayTime = parseInt(audioPlayer[0].currentTime),
+                currentCookie = audioPlayer.attr('data-cookie');
+
+            setCookie(currentCookie, currentPlayTime);
+        }
+
+        //если выбранный трек уже играет, ничего не делаем:
         if ($(this).hasClass('player-list__item-link--selected'))
             return;
 
+        //выделяем выбранный трек:
         audioItems.removeClass('player-list__item-link--selected');
         $(this).addClass('player-list__item-link--selected');
 
@@ -104,7 +142,7 @@ $(document).ready(function () {
         audioPlayer.prop('src', audioItemSrc);
         // audioPlayer[0].play();
 
-        //TODO: пока не работает с большими файлами:
+        //TODO: пока не работает с большими файлами (попробовать стриминг?):
         let playPromise = audioPlayer[0].play();
         if (playPromise !== undefined) {
             playPromise.then(_ => {
