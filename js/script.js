@@ -43,7 +43,7 @@ const checkTextWidth = function () {
     }
 };
 
-//очистка cookie:
+//установка cookie:
 const setCookie = function (cookieName, cookieValue = '') {
     $.cookie(cookieName, cookieValue, {
         expires: 365,
@@ -111,9 +111,17 @@ $(document).ready(function () {
                 if ($.cookie(cookieName)) {
                     audioPlayer[0].currentTime = $.cookie(cookieName);
                 }
+
+                // var sound = new Howl({
+                //     src: audioPlayer.attr('src'),
+                //     html5: true
+                // });
+                // sound.play();
+
                 audioPlayer[0].play();
             }).catch(error => {
                 console.log(error);
+                // sound.pause();
                 audioPlayer[0].pause();
             });
         }
