@@ -37,12 +37,44 @@ const checkTextWidth = function () {
     let textLine = $('.controls__text'),
         textBox = $('.controls__text-box'),
         textWidth = textLine.outerWidth(),
-        textBoxWidth = textBox.outerWidth();
+        textBoxWidth = textBox.outerWidth(),
+        widthDifference = textWidth - textBoxWidth,
+        animationSpeedCoefficient = 200,
+        animationDuration = Math.round(textWidth / animationSpeedCoefficient * 1000);
 
     if (textWidth > textBoxWidth) {
         textLine.addClass('controls__text--running');
+
+        //анимация:
+        function animationLoop () {
+            textLine.css('left', '0');
+            textLine.animate({
+                left: -widthDifference
+            },
+            animationDuration,
+            'linear',
+            function () {
+                setTimeout(function () {
+                    animationReverseLoop();
+                }, 800);
+            });
+        };
+        function animationReverseLoop () {
+            textLine.css('left', -widthDifference);
+            textLine.animate({
+                    left: 0
+                },
+                animationDuration,
+                'linear',
+                function () {
+                    setTimeout(function () {
+                        animationLoop();
+                    }, 800);
+                });
+        };
+        animationLoop();
     } else {
-        textLine.removeClass('controls__text--running');
+        textLine.removeClass('controls__text--running').attr('style', '').stop();
     }
 };
 
@@ -59,10 +91,12 @@ $(document).ready(function () {
     //подключение кастомной оболчки аудиоплеера:
     //TODO: попробовать подобрать альтернативный плеер
 
-    //сброс времени в input и связанного cookie:
     let resetBtn = $('.controls__reset'),
         timeInput = $('.controls__input'),
         audioPlayer = $('.controls__audio');
+
+    //сброс времени в input и связанного cookie:
+    timeInput.val('');
 
     resetBtn.on('click', function () {
         let relatedCookieName = audioPlayer.data('cookie');
@@ -154,17 +188,12 @@ $(document).ready(function () {
                     audioPlayer[0].currentTime = $.cookie(cookieName);
                 }
 
-                // var sound = new Howl({
-                //     src: audioPlayer.attr('src'),
-                //     html5: true
-                // });
-                // sound.play();
-
                 // audioPlayer[0].play();
             }).catch(error => {
                 console.log(error);
                 // sound.pause();
                 audioPlayer[0].pause();
+                //TODO: попробовать инициализировать перезапуск с этого места
             });
         }
 
@@ -175,12 +204,15 @@ $(document).ready(function () {
         // sound.play();
     });
 
+    //обновление значения инпута и cookie по паузе:
     audioPlayer.on('pause', function () {
         let pauseSeconds = parseInt(audioPlayer[0].currentTime),
             pauseSecondsSef = transformSecondsToTime(pauseSeconds);
 
-        timeInput.val(pauseSecondsSef);
-        setCookie(audioPlayer.attr('data-cookie'), pauseSeconds);
+        if (audioPlayer[0].seeking === false) {
+            timeInput.val(pauseSecondsSef);
+            setCookie(audioPlayer.attr('data-cookie'), pauseSeconds);
+        }
     });
 });
 
