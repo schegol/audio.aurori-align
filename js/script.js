@@ -16,12 +16,15 @@ const transformTimeToSeconds = function(string) {
         minutes = 0,
         hours = 0;
 
-    s += seconds = parseInt(timeArray.pop());
+    seconds = parseInt(timeArray.pop());
+    s += seconds;
+
     if (timeArray.length) {
         minutes = parseInt(timeArray.pop());
         s += minutes * 60;
     }
-    if (timeArray.length && parseInt(timeArray.pop()) > 0) {
+
+    if (timeArray.length) {
         hours = parseInt(timeArray.pop());
         s += hours * 3600;
     }
@@ -97,6 +100,7 @@ $(document).ready(function () {
 
         if (currentCookie.length) {
             setCookie(currentCookie, transformTimeToSeconds(timeInput.val()));
+            audioPlayer[0].currentTime = transformTimeToSeconds(timeInput.val());
         }
     });
 
@@ -156,13 +160,19 @@ $(document).ready(function () {
                 // });
                 // sound.play();
 
-                audioPlayer[0].play();
+                // audioPlayer[0].play();
             }).catch(error => {
                 console.log(error);
                 // sound.pause();
                 audioPlayer[0].pause();
             });
         }
+
+        // var sound = new Howl({
+        //     src: audioPlayer.attr('src'),
+        //     html5: true
+        // });
+        // sound.play();
     });
 
     audioPlayer.on('pause', function () {
